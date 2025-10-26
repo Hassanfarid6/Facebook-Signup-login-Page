@@ -119,6 +119,7 @@ function friendsshow() {
     return;
   } else {
     window.location.href = "friends.html";
+    
   }
 }
 

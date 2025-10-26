@@ -20,14 +20,7 @@
       </div>
 
       <nav class="nav-center" role="navigation" aria-label="Main navigation">
-        <button
-          class="nav-icon"
-          aria-label="Home"
-          aria-current="page"
-          onclick="dash()"
-        >
-          🏠
-        </button>
+        <button class="nav-icon" aria-label="Home" aria-current="page" onclick="dash()">🏠</button>
         <button class="nav-icon" aria-label="Watch">📺</button>
         <button class="nav-icon" aria-label="Marketplace">🏪</button>
         <button class="nav-icon active" aria-label="Groups">👥</button>
@@ -37,16 +30,9 @@
       <div class="nav-right">
         <button
           id="logoutBtn"
-          onclick="logout() "
-          style="
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-          "
+          onclick="logout()"
+          style="background-color: #1877f2; color: white; border: none;
+                 padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;"
         >
           Logout
         </button>
@@ -59,98 +45,46 @@
       <aside class="left-sidebar" role="complementary" aria-label="Quick links">
         <nav aria-label="Shortcuts">
           <div class="sidebar-item" role="button" tabindex="0">
-            <div class="sidebar-icon" id="currentUserPic" aria-hidden="true">
-              <!-- Profile pic will go here -->
-            </div>
-            <span style="font-size: 30px">
-              👥Friends(<span id="count"></span>)</span
-            >
+            <div class="sidebar-icon" id="currentUserPic" aria-hidden="true"></div>
+            <span style="font-size: 30px">👥Friends(<span id="count">0</span>)</span>
           </div>
         </nav>
       </aside>
 
       <!-- Main Content -->
       <section class="main-content">
-        <!-- Create Post -->
-        <!-- <section class="create-post" aria-labelledby="create-post-heading">
-                <h2 id="create-post-heading" class="sr-only">Create a new post</h2>
-                <div class="post-input">
-                    <div class="user-avatar" aria-hidden="true">JD</div>
-                    <button class="post-text">What's on your mind, John?</button>
-                </div>   
-                <div class="post-actions">
-                    <button class="post-action">
-                        <span aria-hidden="true">📹</span>
-                        <span>Live Video</span>
-                    </button>
-                    <button class="post-action">
-                        <span aria-hidden="true">🖼️</span>
-                        <span>Photo/Video</span>
-                    </button>
-                    <button class="post-action">
-                        <span aria-hidden="true">😊</span>
-                        <span>Feeling/Activity</span>
-                    </button>
-                </div>
-            </section> -->
-
         <section class="feed" aria-label="News feed">
           <article class="post" id="maybeknow"></article>
         </section>
+
+        <!-- below sections will be filled by JS -->
+        <div id="friendRequests" style="margin-top: 30px;"></div>
+        <div id="friendsList" style="margin-top: 30px;"></div>
       </section>
 
       <!-- Right Sidebar -->
       <aside class="right-sidebar" role="complementary" aria-label="Contacts">
         <h3 style="margin-bottom: 16px; color: #65676b">Good Things</h3>
-        <div class="contact-item" role="button" tabindex="0">
-          <div class="contact-avatar" aria-hidden="true">S</div>
-
-          <span>Salah</span>
-        </div>
-        <div class="contact-item" role="button" tabindex="0">
-          <div class="contact-avatar" aria-hidden="true">P</div>
-
-          <span>Prayers</span>
-        </div>
-        <div class="contact-item" role="button" tabindex="0">
-          <div class="contact-avatar" aria-hidden="true">H</div>
-
-          <span>Hajj</span>
-        </div>
-        <div class="contact-item" role="button" tabindex="0">
-          <div class="contact-avatar" aria-hidden="true">I</div>
-
-          <span>Insaf</span>
-        </div>
-        <div class="contact-item" role="button" tabindex="0">
-          <div class="contact-avatar" aria-hidden="true">Z</div>
-          <span>Zakat</span>
-        </div>
+        <!-- contacts... -->
       </aside>
     </main>
-    <script>
-      var currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      var users = JSON.parse(localStorage.getItem("users")) || [];
 
-      const Count = document.getElementById("count");
-      Count.innerHTML = users.length - 1;
+    <!-- load any global app helpers first (if apps.js defines logout/dash globally) -->
+    <script src="apps.js"></script>
 
-      const maybe = document.getElementById("maybeknow");
-      maybe.innerHTML = "";
-
-      users.forEach((user) => {
-        // if (user.email === currentUser.email) return; // skip self
-
-        maybe.innerHTML += `
-    <div class="contact-item" role="button" tabindex="0">
-        <div class="contact-avatar" aria-hidden="true">
-            ${user.FirstName[0]}${user.SecondName[0]}
-            </div>
-            <span>${user.FirstName} ${user.SecondName}</span>
-            </div>
-            `;
+    <!-- module script that imports AllData and waits for DOM ready -->
+    <script type="module">
+      import { AllData } from "./data.js";
+      document.addEventListener("DOMContentLoaded", () => {
+        // safety: ensure currentUser exists
+        const cur = localStorage.getItem("currentUser");
+        if (!cur) {
+          console.warn("currentUser not found in localStorage — redirect to login if needed.");
+          // optionally redirect: window.location.href = 'index.html';
+          // return;
+        }
+        AllData();
       });
     </script>
-    <script src="apps.js"></script>
   </body>
 </html>
