@@ -1,56 +1,3 @@
-// export function AllData() {
-//   var currentUser = JSON.parse(localStorage.getItem("currentUser"));
-//   var users = JSON.parse(localStorage.getItem("users")) || [];
-
-//   const Count = document.getElementById("count");
-//   Count.innerHTML = users.length - 1;
-
-//   const maybe = document.getElementById("maybeknow");
-//   maybe.innerHTML = "";
-
-//   users.forEach((user) => {
-//     if (user.email === currentUser.email) return; // skip self
-
-//     maybe.innerHTML += `
-//     <div class="contact-item" role="button" tabindex="0">
-//         <div class="contact-avatar" aria-hidden="true">
-//             ${user.FirstName[0]}${user.SecondName[0]}
-//             </div>
-//             <span>${user.FirstName} ${user.SecondName}</span>
-//             </div>
-//             <button onclick="sendRequest('${user.email}')"
-//             style="
-//                 background-color: #1877f2;
-//                 color: white;
-//                 border: none;
-//                 padding: 5px 10px;
-//                 border-radius: 6px;
-//                 cursor: pointer;
-//                 font-weight: bold;
-//                 margin-bottom: 10px;
-//                 display: inline;
-//             "
-//             > Add Friend</button>
-//             `;
-//   });
-// }
-
-// function sendRequest(email) {
-//         // alert("Friend request sent to " + email);
-//         users = users.map((user) => {
-//           if (user.email === email) {
-//             if (!user.friendRequests) {
-//               user.friendRequests = [];
-//             }
-//             if (!user.friendRequests.includes(currentUser.email)) {
-//               user.friendRequests.push(currentUser.email);
-//             }
-//           }
-//           return user;
-//         });
-//         localStorage.setItem("users", JSON.stringify(users));
-//         alert("Friend request sent to " + email);
-// }
 export function AllData() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -66,8 +13,7 @@ export function AllData() {
 
     const requestSent =
       user.friendRequests && user.friendRequests.includes(currentUser.email);
-    const isFriend =
-      user.friends && user.friends.includes(currentUser.email);
+    const isFriend = user.friends && user.friends.includes(currentUser.email);
 
     let mainBtnHTML = "";
     let cancelBtnHTML = "";
@@ -231,30 +177,6 @@ function showFriendRequests() {
   });
 }
 
-// ✅ Accept Friend Request
-// window.acceptRequest = function (email) {
-//   let users = JSON.parse(localStorage.getItem("users")) || [];
-//   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-//   users = users.map((user) => {
-//     if (user.email === currentUser.email) {
-//       user.friendRequests = user.friendRequests.filter((req) => req !== email);
-//       if (!user.friends) user.friends = [];
-//       if (!user.friends.includes(email)) user.friends.push(email);
-//     }
-//     if (user.email === email) {
-//       if (!user.friends) user.friends = [];
-//       if (!user.friends.includes(currentUser.email))
-//         user.friends.push(currentUser.email);
-//     }
-//     return user;
-//   });
-
-//   localStorage.setItem("users", JSON.stringify(users));
-//   alert("You are now friends with " + email);
-//   AllData();
-// };
-
 // Accept Friend Request
 window.acceptRequest = function (email) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -262,13 +184,16 @@ window.acceptRequest = function (email) {
 
   users = users.map((user) => {
     if (user.email === currentUser.email) {
-      user.friendRequests = (user.friendRequests || []).filter((req) => req !== email);
+      user.friendRequests = (user.friendRequests || []).filter(
+        (req) => req !== email
+      );
       if (!user.friends) user.friends = [];
       if (!user.friends.includes(email)) user.friends.push(email);
     }
     if (user.email === email) {
       if (!user.friends) user.friends = [];
-      if (!user.friends.includes(currentUser.email)) user.friends.push(currentUser.email);
+      if (!user.friends.includes(currentUser.email))
+        user.friends.push(currentUser.email);
     }
     return user;
   });
@@ -284,7 +209,10 @@ window.rejectRequest = function (email) {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   users = users.map((user) => {
-    if (user.email === currentUser.email && Array.isArray(user.friendRequests)) {
+    if (
+      user.email === currentUser.email &&
+      Array.isArray(user.friendRequests)
+    ) {
       user.friendRequests = user.friendRequests.filter((req) => req !== email);
     }
     return user;
@@ -294,24 +222,6 @@ window.rejectRequest = function (email) {
   alert("Friend request rejected from " + email);
   AllData(); // refresh UI
 };
-
-
-// // ✅ Reject Friend Request
-// window.rejectRequest = function (email) {
-//   let users = JSON.parse(localStorage.getItem("users")) || [];
-//   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-//   users = users.map((user) => {
-//     if (user.email === currentUser.email && user.friendRequests) {
-//       user.friendRequests = user.friendRequests.filter((req) => req !== email);
-//     }
-//     return user;
-//   });
-
-//   localStorage.setItem("users", JSON.stringify(users));
-//   alert("Friend request rejected from " + email);
-//   AllData();
-// };
 
 // ✅ Show Friends List
 function showFriendsList() {
